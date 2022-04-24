@@ -52,24 +52,31 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //List<string> picPathList = new List<string>();
-            //获取指定文件夹的所有文件
             string[] paths = Directory.GetFiles(@"D:\_Server\Paper-1.17.1\world\playerdata");
             foreach (var item in paths)
             {
-                //获取文件后缀名
                 if (Path.GetExtension(item).ToLower() == ".dat")
                 {
                     string filename = Path.GetFileName(item);
                     string extension = Path.GetExtension(item);
                     string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(item);
 
-                    var pojo = new PlayerInvDataPojo();
-                    pojo.player_uuid = fileNameWithoutExtension;
-                    pojo.player_name = fileNameWithoutExtension;
-                    //Console.WriteLine(fileNameWithoutExtension + $"\n{DateTime.Now.ToString()}\n" + FileToBase64Str(item));
-                    pojo.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
-                    getColl().InsertOne(pojo.ToBsonDocument());
+                    var res = getColl().Find(new BsonDocument("player_uuid", fileNameWithoutExtension));
+                    if (res.Count() > 0)
+                    {
+                        var r = FromBson<PlayerInvDataPojo>(res.FirstOrDefault().ToBson());
+                        r.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
+                        getColl().FindOneAndUpdate(new BsonDocument("player_uuid", r.player_uuid), r.ToBsonDocument());
+                    }
+                    else
+                    {
+                        var pojo = new PlayerInvDataPojo();
+                        pojo.player_uuid = fileNameWithoutExtension;
+                        pojo.player_name = fileNameWithoutExtension;
+                        pojo.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
+                        getColl().InsertOne(pojo.ToBsonDocument());
+                    }
+
                 }
             }
             MessageBox.Show("备份完毕");
@@ -131,9 +138,9 @@ namespace PlayerDataBackupTool_CSharp
 
         }
 
-        public static T FromBson<T>(string base64data)
+        public static T FromBson<T>(byte[] data)
         {
-            byte[] data = Convert.FromBase64String(base64data);
+            //byte[] data = Convert.FromBase64String(base64data);
 
             using (MemoryStream ms = new MemoryStream(data))
             using (BsonDataReader reader = new BsonDataReader(ms))
