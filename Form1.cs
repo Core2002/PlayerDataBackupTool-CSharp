@@ -182,5 +182,21 @@ namespace PlayerDataBackupTool_CSharp
                 MessageBox.Show("还原失败->玩家数据未备份");
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
+            {
+                if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告（确认2/3）", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
+                {
+                    if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告（确认3/3）", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
+                    {
+                        getColl().DeleteMany(new BsonDocument());
+                        MessageBox.Show("已删除");
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
