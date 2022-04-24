@@ -29,15 +29,7 @@ namespace PlayerDataBackupTool_CSharp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            getColl().Find(new BsonDocument()).ToList().ForEach(r =>
-            {
-                if (r.Contains("player_name"))
-                    listPlayer.Items.Add(r.GetValue("player_name"));
-            });
-            string text = File.ReadAllText(@"D:\_Server\Paper-1.17.1\uuid2name.json");
-            Object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
-            JObject js = obj as JObject;//把上面的obj转换为 Jobject对象
-            dic = js.ToObject<Dictionary<string, string>>();
+            feflashdate();
         }
 
         private void listPlayer_SelectedIndexChanged(object sender, EventArgs e)
@@ -52,6 +44,17 @@ namespace PlayerDataBackupTool_CSharp
             var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
             foreach (var a in data.data.Keys)
                 listTime.Items.Add(a);
+            var k = listPlayer.SelectedItem.ToString();
+            if (dic.ContainsKey(k))
+            {
+                label2.Text = $"> {dic[k]}";
+                listPlayer.Text = k;
+                return;
+            }
+            else
+            {
+                label2.Text = ">";
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -83,8 +86,8 @@ namespace PlayerDataBackupTool_CSharp
 
                 }
             }
+            feflashdate();
             MessageBox.Show("备份完毕");
-
         }
 
         /// <summary>
@@ -173,7 +176,12 @@ namespace PlayerDataBackupTool_CSharp
                 {
                     var path = root + uuid + ".dat";
                     Base64ToOriFile(base64data, path);
-                    MessageBox.Show($"玩家{uuid}还原到{time}成功\r\n{path}");
+                    string name = "[未知玩家]";
+                    if (dic.ContainsKey(uuid))
+                    {
+                        name = dic[uuid];
+                    }
+                    MessageBox.Show($"玩家{name}，UUID:{uuid}还原到 {time} 成功\r\n路径：{path}");
                 }
                 else
                 {
@@ -184,6 +192,7 @@ namespace PlayerDataBackupTool_CSharp
             {
                 MessageBox.Show("还原失败->玩家数据未备份");
             }
+            feflashdate();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -195,6 +204,7 @@ namespace PlayerDataBackupTool_CSharp
                     if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告（确认3/3）", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
                     {
                         getColl().DeleteMany(new BsonDocument());
+                        feflashdate();
                         MessageBox.Show("已删除");
                         return;
                     }
@@ -204,22 +214,7 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button4_Click(object sender, EventArgs e)
         {
-            listPlayer.Items.Clear();
-            getColl().Find(new BsonDocument()).ToList().ForEach(r =>
-            {
-                if (r.Contains("player_name"))
-                    listPlayer.Items.Add(r.GetValue("player_name"));
-            });
-            listTime.Items.Clear();
-            if (listPlayer.SelectedItem == null)
-                return;
-            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-            var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
-            var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
-
-            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
-            foreach (var a in data.data.Keys)
-                listTime.Items.Add(a);
+            feflashdate();
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -242,6 +237,30 @@ namespace PlayerDataBackupTool_CSharp
                 }
 
             }
+        }
+
+        public void feflashdate()
+        {
+            listPlayer.Items.Clear();
+            getColl().Find(new BsonDocument()).ToList().ForEach(r =>
+            {
+                if (r.Contains("player_name"))
+                    listPlayer.Items.Add(r.GetValue("player_name"));
+            });
+            string text = File.ReadAllText(@"D:\_Server\Paper-1.17.1\uuid2name.json");
+            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
+            JObject js = obj as JObject;//把上面的obj转换为 Jobject对象
+            dic = js.ToObject<Dictionary<string, string>>();
+            listTime.Items.Clear();
+            if (listPlayer.SelectedItem == null)
+                return;
+            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+            var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
+            var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
+
+            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
+            foreach (var a in data.data.Keys)
+                listTime.Items.Add(a);
         }
 
         private void label1_Click(object sender, EventArgs e)
