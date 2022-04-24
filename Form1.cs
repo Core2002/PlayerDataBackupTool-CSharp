@@ -53,6 +53,7 @@ namespace PlayerDataBackupTool_CSharp
             }
             else
             {
+                textBox1.Text = "";
                 label2.Text = ">";
             }
         }
@@ -256,6 +257,7 @@ namespace PlayerDataBackupTool_CSharp
             if (listPlayer.SelectedItem == null)
             {
                 label2.Text = ">";
+                textBox1.Text = "";
                 return;
             }
             var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
