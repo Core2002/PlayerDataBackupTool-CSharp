@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace PlayerDataBackupTool_CSharp
     {
         MongoClient client = new MongoClient("mongodb://localhost:27017");
         string root = @"D:\_Server\Paper-1.17.1\world\playerdata\";
+        Dictionary<string, string> dic;
 
         public IMongoCollection<BsonDocument> getColl()
         {
@@ -22,8 +24,6 @@ namespace PlayerDataBackupTool_CSharp
         }
         public Form1()
         {
-
-
             InitializeComponent();
         }
 
@@ -34,7 +34,10 @@ namespace PlayerDataBackupTool_CSharp
                 if (r.Contains("player_name"))
                     listPlayer.Items.Add(r.GetValue("player_name"));
             });
-
+            string text = File.ReadAllText(@"D:\_Server\Paper-1.17.1\uuid2name.json");
+            Object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
+            JObject js = obj as JObject;//把上面的obj转换为 Jobject对象
+            dic = js.ToObject<Dictionary<string, string>>();
         }
 
         private void listPlayer_SelectedIndexChanged(object sender, EventArgs e)
@@ -197,6 +200,53 @@ namespace PlayerDataBackupTool_CSharp
                     }
                 }
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            listPlayer.Items.Clear();
+            getColl().Find(new BsonDocument()).ToList().ForEach(r =>
+            {
+                if (r.Contains("player_name"))
+                    listPlayer.Items.Add(r.GetValue("player_name"));
+            });
+            listTime.Items.Clear();
+            if (listPlayer.SelectedItem == null)
+                return;
+            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+            var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
+            var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
+
+            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
+            foreach (var a in data.data.Keys)
+                listTime.Items.Add(a);
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            refalshsearch();
+        }
+
+        public void refalshsearch()
+        {
+            foreach (var k in dic.Keys)
+            {
+                if (dic.ContainsValue(textBox1.Text) && textBox1.Text.Equals(dic[k]))
+                {
+                    label1.Text = $"[{dic[k]}]({k})";
+                    listPlayer.Text = k;
+                    return;
+                }
+                else
+                {
+                    label1.Text = "查无此人";
+                }
+
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            refalshsearch();
         }
     }
 }
