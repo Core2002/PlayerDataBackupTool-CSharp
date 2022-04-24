@@ -252,8 +252,12 @@ namespace PlayerDataBackupTool_CSharp
             JObject js = obj as JObject;//把上面的obj转换为 Jobject对象
             dic = js.ToObject<Dictionary<string, string>>();
             listTime.Items.Clear();
+
             if (listPlayer.SelectedItem == null)
+            {
+                label2.Text = ">";
                 return;
+            }
             var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
             var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
             var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
