@@ -29,6 +29,7 @@ namespace PlayerDataBackupTool_CSharp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.listPlayer = new System.Windows.Forms.ListBox();
             this.listTime = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -44,7 +45,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             this.listPlayer.FormattingEnabled = true;
             this.listPlayer.ItemHeight = 18;
-            this.listPlayer.Location = new System.Drawing.Point(40, 26);
+            this.listPlayer.Location = new System.Drawing.Point(12, 12);
             this.listPlayer.Name = "listPlayer";
             this.listPlayer.Size = new System.Drawing.Size(566, 580);
             this.listPlayer.TabIndex = 0;
@@ -54,14 +55,14 @@ namespace PlayerDataBackupTool_CSharp
             // 
             this.listTime.FormattingEnabled = true;
             this.listTime.ItemHeight = 18;
-            this.listTime.Location = new System.Drawing.Point(612, 26);
+            this.listTime.Location = new System.Drawing.Point(584, 12);
             this.listTime.Name = "listTime";
             this.listTime.Size = new System.Drawing.Size(207, 580);
             this.listTime.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(825, 221);
+            this.button1.Location = new System.Drawing.Point(797, 207);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(173, 59);
             this.button1.TabIndex = 2;
@@ -71,7 +72,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(825, 156);
+            this.button2.Location = new System.Drawing.Point(797, 142);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(173, 59);
             this.button2.TabIndex = 3;
@@ -81,7 +82,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(825, 91);
+            this.button3.Location = new System.Drawing.Point(797, 77);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(173, 59);
             this.button3.TabIndex = 4;
@@ -91,7 +92,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(825, 26);
+            this.button4.Location = new System.Drawing.Point(797, 12);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(173, 59);
             this.button4.TabIndex = 5;
@@ -101,7 +102,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(40, 612);
+            this.textBox1.Location = new System.Drawing.Point(12, 598);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(316, 28);
             this.textBox1.TabIndex = 6;
@@ -110,7 +111,7 @@ namespace PlayerDataBackupTool_CSharp
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(362, 615);
+            this.label1.Location = new System.Drawing.Point(334, 601);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(233, 18);
             this.label1.TabIndex = 7;
@@ -120,7 +121,7 @@ namespace PlayerDataBackupTool_CSharp
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 660);
+            this.label2.Location = new System.Drawing.Point(12, 637);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(17, 18);
             this.label2.TabIndex = 8;
@@ -130,7 +131,8 @@ namespace PlayerDataBackupTool_CSharp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 687);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1002, 664);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
@@ -140,7 +142,12 @@ namespace PlayerDataBackupTool_CSharp
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listTime);
             this.Controls.Add(this.listPlayer);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "我的世界服务器玩家背包备份还原工具";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

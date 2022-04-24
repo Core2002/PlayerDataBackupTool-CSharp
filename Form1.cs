@@ -8,14 +8,15 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace PlayerDataBackupTool_CSharp
 {
     public partial class Form1 : Form
     {
-        MongoClient client = new MongoClient("mongodb://localhost:27017");
-        string root = @"D:\_Server\Paper-1.17.1\world\playerdata\";
+        MongoClient client;
+        ConfigPojo cfg;
         Dictionary<string, string> dic;
 
         public IMongoCollection<BsonDocument> getColl()
@@ -24,6 +25,8 @@ namespace PlayerDataBackupTool_CSharp
         }
         public Form1()
         {
+            cfg = Path2Pojo<ConfigPojo>(@"config.json");
+            client = new MongoClient(cfg.mongodb_uri);
             InitializeComponent();
         }
 
@@ -60,7 +63,7 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] paths = Directory.GetFiles(root);
+            string[] paths = Directory.GetFiles(cfg.world_playerdata_path);
             foreach (var item in paths)
             {
                 if (Path.GetExtension(item).ToLower() == ".dat")
@@ -175,7 +178,7 @@ namespace PlayerDataBackupTool_CSharp
                 string base64data;
                 if (r.data.TryGetValue(time, out base64data))
                 {
-                    var path = root + uuid + ".dat";
+                    var path = cfg.world_playerdata_path + uuid + ".dat";
                     Base64ToOriFile(base64data, path);
                     string name = "[未知玩家]";
                     if (dic.ContainsKey(uuid))
@@ -248,9 +251,9 @@ namespace PlayerDataBackupTool_CSharp
                 if (r.Contains("player_name"))
                     listPlayer.Items.Add(r.GetValue("player_name"));
             });
-            string text = File.ReadAllText(@"D:\_Server\Paper-1.17.1\uuid2name.json");
+            string text = File.ReadAllText(cfg.uuid2name_path);
             object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
-            JObject js = obj as JObject;//把上面的obj转换为 Jobject对象
+            JObject js = obj as JObject;
             dic = js.ToObject<Dictionary<string, string>>();
             listTime.Items.Clear();
 
@@ -272,6 +275,11 @@ namespace PlayerDataBackupTool_CSharp
         private void label1_Click(object sender, EventArgs e)
         {
             refalshsearch();
+        }
+
+        public T Path2Pojo<T>(string path)
+        {
+            return new JavaScriptSerializer().Deserialize<T>(File.ReadAllText(path));
         }
     }
 }
