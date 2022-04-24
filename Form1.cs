@@ -14,6 +14,7 @@ namespace PlayerDataBackupTool_CSharp
     public partial class Form1 : Form
     {
         MongoClient client = new MongoClient("mongodb://localhost:27017");
+        string root = @"D:\_Server\Paper-1.17.1\world\playerdata\";
 
         public IMongoCollection<BsonDocument> getColl()
         {
@@ -52,7 +53,7 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] paths = Directory.GetFiles(@"D:\_Server\Paper-1.17.1\world\playerdata");
+            string[] paths = Directory.GetFiles(root);
             foreach (var item in paths)
             {
                 if (Path.GetExtension(item).ToLower() == ".dat")
@@ -147,6 +148,38 @@ namespace PlayerDataBackupTool_CSharp
             {
                 JsonSerializer serializer = new JsonSerializer();
                 return serializer.Deserialize<T>(reader);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var i = listTime.SelectedItem;
+            if (i == null)
+            {
+                MessageBox.Show("你需要选择要还原的时间点");
+                return;
+            }
+            var uuid = listPlayer.SelectedItem.ToString();
+            var time = i.ToString();
+            var res = getColl().Find(new BsonDocument("player_uuid", uuid));
+            if (res.Count() > 0)
+            {
+                var r = FromBson<PlayerInvDataPojo>(res.FirstOrDefault().ToBson());
+                string base64data;
+                if (r.data.TryGetValue(time, out base64data))
+                {
+                    var path = root + uuid + ".dat";
+                    Base64ToOriFile(base64data, path);
+                    MessageBox.Show($"玩家{uuid}还原到{time}成功\r\n{path}");
+                }
+                else
+                {
+                    MessageBox.Show("还原失败->数据损坏");
+                }
+            }
+            else
+            {
+                MessageBox.Show("还原失败->玩家数据未备份");
             }
         }
     }

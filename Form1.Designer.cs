@@ -32,6 +32,7 @@ namespace PlayerDataBackupTool_CSharp
             this.listPlayer = new System.Windows.Forms.ListBox();
             this.listTime = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listPlayer
@@ -63,11 +64,22 @@ namespace PlayerDataBackupTool_CSharp
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(568, 284);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(173, 59);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "还原选中";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listTime);
             this.Controls.Add(this.listPlayer);
@@ -83,6 +95,7 @@ namespace PlayerDataBackupTool_CSharp
         private System.Windows.Forms.ListBox listPlayer;
         private System.Windows.Forms.ListBox listTime;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
