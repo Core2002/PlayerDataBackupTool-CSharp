@@ -72,7 +72,7 @@ namespace PlayerDataBackupTool_CSharp
             this.Controls.Add(this.listTime);
             this.Controls.Add(this.listPlayer);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "我的世界服务器玩家背包备份还原工具";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
