@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("PlayerDataBackupTool-CSharp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Minecraft服务器玩家背包备份还原工具")]
+[assembly: AssemblyDescription("By NekokeCore")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PlayerDataBackupTool-CSharp")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("www.fifu.fun")]
+[assembly: AssemblyProduct("Minecraft服务器玩家背包备份还原工具")]
+[assembly: AssemblyCopyright("Copyright © FiFu 2022")]
+[assembly: AssemblyTrademark("FiFu")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
