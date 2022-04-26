@@ -16,17 +16,17 @@ namespace PlayerDataBackupTool_CSharp
     public partial class Form1 : Form
     {
         MongoClient client;
-        ConfigPojo cfg;
+        public static ConfigPojo cfg;
+        public static Form1 Singleton;
         Dictionary<string, string> dic;
 
         public IMongoCollection<BsonDocument> getColl()
         {
-            return client.GetDatabase("fifu_server").GetCollection<BsonDocument>("player_inv_data");
+            return client.GetDatabase(cfg.mongodb_database).GetCollection<BsonDocument>(cfg.mongodb_collection);
         }
         public Form1()
         {
-            cfg = Path2Pojo<ConfigPojo>(@"config.json");
-            client = new MongoClient(cfg.mongodb_uri);
+            Singleton = this;
             InitializeComponent();
         }
 
@@ -245,6 +245,8 @@ namespace PlayerDataBackupTool_CSharp
 
         public void feflashdate()
         {
+            cfg = Path2Pojo<ConfigPojo>(@"config.json");
+            client = new MongoClient(cfg.mongodb_uri);
             listPlayer.Items.Clear();
             getColl().Find(new BsonDocument()).ToList().ForEach(r =>
             {
@@ -280,6 +282,12 @@ namespace PlayerDataBackupTool_CSharp
         public T Path2Pojo<T>(string path)
         {
             return new JavaScriptSerializer().Deserialize<T>(File.ReadAllText(path));
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var f = new SetConfigForm();
+            f.ShowDialog();
         }
     }
 }
