@@ -24,7 +24,7 @@ namespace PlayerDataBackupTool_CSharp
             Form1.cfg.uuid2name_path = uuid2name_path.Text;
             Form1.cfg.saveConfig();
             Form1.Singleton.feflashdate();
-            this.Close();
+            this.Visible = false;
         }
 
         private void SetConfigForm_Load(object sender, EventArgs e)

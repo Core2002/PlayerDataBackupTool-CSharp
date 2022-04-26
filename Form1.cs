@@ -18,6 +18,7 @@ namespace PlayerDataBackupTool_CSharp
         MongoClient client;
         public static ConfigPojo cfg;
         public static Form1 Singleton;
+        public static SetConfigForm setConfigForm;
         Dictionary<string, string> dic;
 
         public IMongoCollection<BsonDocument> getColl()
@@ -27,6 +28,7 @@ namespace PlayerDataBackupTool_CSharp
         public Form1()
         {
             Singleton = this;
+            setConfigForm = new SetConfigForm();
             InitializeComponent();
         }
 
@@ -63,6 +65,9 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!feflashdate())
+                return;
+            
             string[] paths = Directory.GetFiles(cfg.world_playerdata_path);
             foreach (var item in paths)
             {
@@ -90,7 +95,9 @@ namespace PlayerDataBackupTool_CSharp
 
                 }
             }
-            feflashdate();
+            if (!feflashdate())
+                return;
+
             MessageBox.Show("备份完毕");
         }
 
@@ -163,6 +170,9 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (!feflashdate())
+                return;
+
             var i = listTime.SelectedItem;
             if (i == null)
             {
@@ -201,6 +211,9 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (!feflashdate())
+                return;
+
             if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
             {
                 if ((int)MessageBox.Show("确定需要删库跑路吗？", "警告（确认2/3）", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == 1)
@@ -227,6 +240,9 @@ namespace PlayerDataBackupTool_CSharp
 
         public void refalshsearch()
         {
+            if (!feflashdate())
+                return;
+
             foreach (var k in dic.Keys)
             {
                 if (dic.ContainsValue(textBox1.Text) && textBox1.Text.Equals(dic[k]))
@@ -243,35 +259,48 @@ namespace PlayerDataBackupTool_CSharp
             }
         }
 
-        public void feflashdate()
+        public bool feflashdate()
         {
-            cfg = Path2Pojo<ConfigPojo>(@"config.json");
-            client = new MongoClient(cfg.mongodb_uri);
-            listPlayer.Items.Clear();
-            getColl().Find(new BsonDocument()).ToList().ForEach(r =>
+            try
             {
-                if (r.Contains("player_name"))
-                    listPlayer.Items.Add(r.GetValue("player_name"));
-            });
-            string text = File.ReadAllText(cfg.uuid2name_path);
-            object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
-            JObject js = obj as JObject;
-            dic = js.ToObject<Dictionary<string, string>>();
-            listTime.Items.Clear();
+                cfg = Path2Pojo<ConfigPojo>(@"config.json");
+                client = new MongoClient(cfg.mongodb_uri);
+                listPlayer.Items.Clear();
+                getColl().Find(new BsonDocument()).ToList().ForEach(r =>
+                {
+                    if (r.Contains("player_name"))
+                        listPlayer.Items.Add(r.GetValue("player_name"));
+                });
+                string text = File.ReadAllText(cfg.uuid2name_path);
+                object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
+                JObject js = obj as JObject;
+                dic = js.ToObject<Dictionary<string, string>>();
+                listTime.Items.Clear();
 
-            if (listPlayer.SelectedItem == null)
-            {
-                label2.Text = ">";
-                textBox1.Text = "";
-                return;
+                if (listPlayer.SelectedItem == null)
+                {
+                    label2.Text = ">";
+                    textBox1.Text = "";
+                    return true;
+                }
+                var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+                var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
+                var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
+
+                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
+                foreach (var a in data.data.Keys)
+                    listTime.Items.Add(a);
             }
-            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-            var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
-            var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
-
-            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
-            foreach (var a in data.data.Keys)
-                listTime.Items.Add(a);
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "配置填写错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!setConfigForm.Visible)
+                {
+                    setConfigForm.ShowDialog();
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -286,8 +315,11 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var f = new SetConfigForm();
-            f.ShowDialog();
+            
+            if (!setConfigForm.Visible)
+            {
+                setConfigForm.ShowDialog();
+            }
         }
     }
 }

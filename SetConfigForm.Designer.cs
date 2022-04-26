@@ -138,7 +138,8 @@ namespace PlayerDataBackupTool_CSharp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(955, 372);
+            this.ClientSize = new System.Drawing.Size(955, 417);
+            this.ControlBox = false;
             this.Controls.Add(this.uuid2name_path);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.world_playerdata_path);
@@ -157,7 +158,7 @@ namespace PlayerDataBackupTool_CSharp
             this.Name = "SetConfigForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "设置配置文件";
+            this.Text = "填写配置文件";
             this.Load += new System.EventHandler(this.SetConfigForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
