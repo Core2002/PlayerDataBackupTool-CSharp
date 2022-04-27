@@ -98,7 +98,7 @@ namespace PlayerDataBackupTool_CSharp
             if (!feflashdate())
                 return;
 
-            MessageBox.Show("备份完毕");
+            MessageBox.Show("备份完毕", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -170,9 +170,6 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!feflashdate())
-                return;
-
             var i = listTime.SelectedItem;
             if (i == null)
             {
