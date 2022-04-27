@@ -240,9 +240,6 @@ namespace PlayerDataBackupTool_CSharp
 
         public void refalshsearch()
         {
-            if (!feflashdate())
-                return;
-
             foreach (var k in dic.Keys)
             {
                 if (dic.ContainsValue(textBox1.Text) && textBox1.Text.Equals(dic[k]))
