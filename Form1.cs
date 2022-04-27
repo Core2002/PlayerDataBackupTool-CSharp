@@ -173,7 +173,7 @@ namespace PlayerDataBackupTool_CSharp
             var i = listTime.SelectedItem;
             if (i == null)
             {
-                MessageBox.Show("你需要选择要还原的时间点");
+                MessageBox.Show("你需要选择要还原的时间点", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             var uuid = listPlayer.SelectedItem.ToString();
@@ -192,16 +192,16 @@ namespace PlayerDataBackupTool_CSharp
                     {
                         name = dic[uuid];
                     }
-                    MessageBox.Show($"玩家{name}，UUID:{uuid}还原到 {time} 成功\r\n路径：{path}");
+                    MessageBox.Show($"玩家{name}，UUID:{uuid}\r\n还原到 {time} 成功\r\n路径：{path}", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("还原失败->数据损坏");
+                    MessageBox.Show("还原失败->数据损坏", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("还原失败->玩家数据未备份");
+                MessageBox.Show("还原失败->玩家数据未备份", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             feflashdate();
         }
@@ -219,7 +219,7 @@ namespace PlayerDataBackupTool_CSharp
                     {
                         getColl().DeleteMany(new BsonDocument());
                         feflashdate();
-                        MessageBox.Show("已删除");
+                        MessageBox.Show("数据已删除", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
