@@ -41,6 +41,8 @@ namespace PlayerDataBackupTool_CSharp
             this.world_playerdata_path = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.uuid2name_path = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -134,12 +136,33 @@ namespace PlayerDataBackupTool_CSharp
             this.uuid2name_path.Size = new System.Drawing.Size(596, 28);
             this.uuid2name_path.TabIndex = 10;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(635, 138);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(304, 96);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "重新解析UUID映射表 （正版）";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(632, 113);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(89, 18);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "0Sec,0Err";
+            // 
             // SetConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(955, 417);
             this.ControlBox = false;
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.uuid2name_path);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.world_playerdata_path);
@@ -178,5 +201,7 @@ namespace PlayerDataBackupTool_CSharp
         private System.Windows.Forms.TextBox world_playerdata_path;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox uuid2name_path;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label6;
     }
 }

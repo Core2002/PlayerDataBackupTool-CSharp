@@ -19,7 +19,7 @@ namespace PlayerDataBackupTool_CSharp
         public static ConfigPojo cfg;
         public static Form1 Singleton;
         public static SetConfigForm setConfigForm;
-        Dictionary<string, string> dic;
+        public Dictionary<string, string> dic;
 
         public IMongoCollection<BsonDocument> getColl()
         {
