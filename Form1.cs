@@ -43,7 +43,7 @@ namespace PlayerDataBackupTool_CSharp
             if (listPlayer.SelectedItem == null)
                 return;
             var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-            var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
+            var res = getColl().Find(new BsonDocument("player_uuid", listPlayer.SelectedItem.ToString())).FirstOrDefault();
             var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
 
             var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
@@ -88,7 +88,6 @@ namespace PlayerDataBackupTool_CSharp
                     {
                         var pojo = new PlayerInvDataPojo();
                         pojo.player_uuid = fileNameWithoutExtension;
-                        pojo.player_name = fileNameWithoutExtension;
                         pojo.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
                         getColl().InsertOne(pojo.ToBsonDocument());
                     }
@@ -262,8 +261,8 @@ namespace PlayerDataBackupTool_CSharp
                 listPlayer.Items.Clear();
                 getColl().Find(new BsonDocument()).ToList().ForEach(r =>
                 {
-                    if (r.Contains("player_name"))
-                        listPlayer.Items.Add(r.GetValue("player_name"));
+                    if (r.Contains("player_uuid"))
+                        listPlayer.Items.Add(r.GetValue("player_uuid"));
                 });
                 string text = File.ReadAllText(cfg.uuid2name_path);
                 object obj = Newtonsoft.Json.JsonConvert.DeserializeObject(text);
@@ -278,7 +277,7 @@ namespace PlayerDataBackupTool_CSharp
                     return true;
                 }
                 var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-                var res = getColl().Find(new BsonDocument("player_name", listPlayer.SelectedItem.ToString())).FirstOrDefault();
+                var res = getColl().Find(new BsonDocument("player_uuid", listPlayer.SelectedItem.ToString())).FirstOrDefault();
                 var json = JObject.Parse(res.ToJson(jsonWriterSettings)).ToString();
 
                 var data = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerInvDataPojo>(json);
