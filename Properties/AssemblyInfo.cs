@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Minecraft服务器玩家背包备份还原工具")]
-[assembly: AssemblyDescription("By NekokeCore")]
+[assembly: AssemblyDescription("By 钟小白Core")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.fifu.fun")]
 [assembly: AssemblyProduct("Minecraft服务器玩家背包备份还原工具")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
