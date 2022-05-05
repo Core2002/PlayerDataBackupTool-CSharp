@@ -69,6 +69,7 @@ namespace PlayerDataBackupTool_CSharp
                 return;
             
             string[] paths = Directory.GetFiles(cfg.world_playerdata_path);
+            var t = DateTime.Now.ToString();
             foreach (var item in paths)
             {
                 if (Path.GetExtension(item).ToLower() == ".dat")
@@ -81,14 +82,14 @@ namespace PlayerDataBackupTool_CSharp
                     if (res.Count() > 0)
                     {
                         var r = FromBson<PlayerInvDataPojo>(res.FirstOrDefault().ToBson());
-                        r.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
+                        r.data.Add(t, FileToBase64Str(item));
                         getColl().FindOneAndUpdate(new BsonDocument("player_uuid", r.player_uuid), r.ToBsonDocument());
                     }
                     else
                     {
                         var pojo = new PlayerInvDataPojo();
                         pojo.player_uuid = fileNameWithoutExtension;
-                        pojo.data.Add(DateTime.Now.ToString(), FileToBase64Str(item));
+                        pojo.data.Add(t, FileToBase64Str(item));
                         getColl().InsertOne(pojo.ToBsonDocument());
                     }
 
