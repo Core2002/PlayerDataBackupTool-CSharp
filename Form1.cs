@@ -35,6 +35,9 @@ namespace PlayerDataBackupTool_CSharp
         private void Form1_Load(object sender, EventArgs e)
         {
             feflashdate();
+
+            timer1.Interval = 1 * 60 * 60 * 1000 / 100;
+            timer1.Start();
         }
 
         private void listPlayer_SelectedIndexChanged(object sender, EventArgs e)
@@ -63,11 +66,11 @@ namespace PlayerDataBackupTool_CSharp
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void BackUp()
         {
             if (!feflashdate())
                 return;
-            
+
             string[] paths = Directory.GetFiles(cfg.world_playerdata_path);
             var t = DateTime.Now.ToString();
             foreach (var item in paths)
@@ -97,7 +100,11 @@ namespace PlayerDataBackupTool_CSharp
             }
             if (!feflashdate())
                 return;
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            BackUp();
             MessageBox.Show("备份完毕", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -309,10 +316,44 @@ namespace PlayerDataBackupTool_CSharp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            
             if (!setConfigForm.Visible)
             {
                 setConfigForm.ShowDialog();
+            }
+        }
+
+        bool AutoBackUp { get; set; }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+            AutoBackUp = !AutoBackUp;
+            if (AutoBackUp)
+            {
+                progressBar1.Value = 0;
+                timer1.Enabled = true;
+                MessageBox.Show("已开启自动备份");
+            }
+            else
+            {
+                progressBar1.Value = 0;
+                timer1.Enabled = false;
+                MessageBox.Show("已关闭自动备份");
+            }
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (AutoBackUp)
+            {
+                if (progressBar1.Value != 100)
+                    progressBar1.Value += 1;
+                else
+                    progressBar1.Value = 0;
+                if (progressBar1.Value == 100)
+                {
+                    BackUp();
+                }
             }
         }
     }
