@@ -70,7 +70,7 @@ namespace PlayerDataBackupTool_CSharp
                 File.WriteAllText(Form1.cfg.uuid2name_path, JsonConvert.SerializeObject(Form1.Singleton.dic,Formatting.Indented));
                 stats.Item1++;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 stats.Item2++;
             }
