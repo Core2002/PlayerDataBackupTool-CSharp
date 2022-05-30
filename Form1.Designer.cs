@@ -143,7 +143,7 @@ namespace PlayerDataBackupTool_CSharp
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(584, 598);
+            this.progressBar1.Location = new System.Drawing.Point(584, 624);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(386, 28);
             this.progressBar1.TabIndex = 10;
