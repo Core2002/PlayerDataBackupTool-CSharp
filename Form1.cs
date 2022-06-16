@@ -36,7 +36,7 @@ namespace PlayerDataBackupTool_CSharp
         {
             feflashdate();
 
-            timer1.Interval = 1 * 60 * 60 * 1000 / 100;
+            timer1.Interval = 24 * 60 * 60 * 1000 / 100;
             timer1.Start();
         }
 
